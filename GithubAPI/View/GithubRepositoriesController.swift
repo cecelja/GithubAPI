@@ -18,11 +18,18 @@ extension GithubRepositoriesController {
 class GithubRepositoriesController: UIViewController {
     let tableView = UITableView()
     let repositoriesProvider: GithubRepositoriesProvider
+    
+    var repositoriesView: RepositoriesView? {
+        guard let view = view as? RepositoriesView else {
+            fatalError()
+        }
+        return view
+    }
 
     
     var viewModel: ViewModel? {
         didSet {
-            tableView.reloadData()
+            repositoriesView?.tableView.reloadData()
         }
     }
     
@@ -35,11 +42,18 @@ class GithubRepositoriesController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func loadView() {
+        super.loadView()
+        view = RepositoriesView()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         self.title = "GithubAPI"
-        setupTableView()
+        repositoriesView?.setupTableView()
+        repositoriesView?.tableView.dataSource = self
+        repositoriesView?.tableView.delegate = self
         repositoriesProvider.getRepositories(organisation: "apple") { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
@@ -57,21 +71,6 @@ class GithubRepositoriesController: UIViewController {
         let alert = UIAlertController(title: title, message: description, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
-    }
-    
-    func setupTableView() {
-        view.addSubview(tableView)
-        tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.cellIdentifier)
-        tableView.separatorStyle = .singleLine
-        tableView.dataSource = self
-        tableView.delegate = self
-        
-        tableView.snp.makeConstraints{make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(12)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-12)
-        }
-        
     }
 
 }
