@@ -118,15 +118,15 @@ class DetailsController: UIViewController {
         container.snp.makeConstraints{make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(100)
+            make.height.equalTo(200)
         }
         icon.snp.makeConstraints{make in
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().inset(12)
-            make.width.height.equalTo(60)
+            make.width.height.equalTo(100)
         }
         titleLabel.snp.makeConstraints{make in
-            make.top.equalToSuperview().offset(12)
+            make.centerY.equalToSuperview()
             make.leading.equalTo(icon.snp.trailing).offset(16)
         }
         loginLabel.snp.makeConstraints{make in

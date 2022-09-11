@@ -40,7 +40,7 @@ class GithubRepositoriesController: UIViewController {
         view.backgroundColor = .white
         self.title = "GithubAPI"
         setupTableView()
-        repositoriesProvider.getRepositories(organisation: "undabot") { [weak self] result in
+        repositoriesProvider.getRepositories(organisation: "apple") { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let repositories):
