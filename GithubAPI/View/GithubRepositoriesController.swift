@@ -16,8 +16,8 @@ extension GithubRepositoriesController {
 }
 
 class GithubRepositoriesController: UIViewController {
-    let tableView = UITableView()
     let repositoriesProvider: GithubRepositoriesProvider
+    weak var coordinator: Coordinator?
     
     var repositoriesView: RepositoriesView? {
         guard let view = view as? RepositoriesView else {
@@ -54,6 +54,7 @@ class GithubRepositoriesController: UIViewController {
         repositoriesView?.setupTableView()
         repositoriesView?.tableView.dataSource = self
         repositoriesView?.tableView.delegate = self
+        repositoriesView?.catButton.addTarget(self, action: #selector(goToCatController), for: .touchUpInside)
         repositoriesProvider.getRepositories(organisation: "apple") { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
@@ -71,6 +72,10 @@ class GithubRepositoriesController: UIViewController {
         let alert = UIAlertController(title: title, message: description, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    @objc func goToCatController() {
+        coordinator?.openCatController(repositoryProvider: repositoriesProvider)
     }
 
 }
@@ -101,11 +106,7 @@ extension GithubRepositoriesController: UITableViewDataSource {
 
 extension GithubRepositoriesController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var detailsController = DetailsController()
-        detailsController.detailsViewModel = DetailsController.DetailsViewModel(repository: (viewModel?.githubRepositories[indexPath.row])!)
-        detailsController.modalPresentationStyle = .pageSheet
-        detailsController.sheetPresentationController?.detents = [.medium()]
-        present(detailsController, animated: true)
-        
+        coordinator?.openDetailsController(index: indexPath.row, viewModel: self.viewModel)
     }
+    
 }

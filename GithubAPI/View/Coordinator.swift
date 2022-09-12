@@ -5,23 +5,42 @@
 //  Created by Filip Cecelja on 9/11/22.
 //
 //
-//import Foundation
-//import UIKit
-//
-//enum NavigationPath: String{
-//    case catcontroller
-//    case detailscontroller
-//}
-//
-//protocol CoordinatorProtocol {
-//    func navigateTo(path: NavigationPath)
-//}
-//
-//class Coordinator: CoordinatorProtocol {
-//    func navigateTo(path: NavigationPath) {
-//        <#code#>
-//    }
-//
-//
-//}
+
+import Foundation
+import UIKit
+
+protocol CoordinatorProtocol {
+    var navigationController: UINavigationController {get set}
+    func start()
+}
+
+class Coordinator: CoordinatorProtocol {
+    var navigationController: UINavigationController
+    
+    init(navigationController: UINavigationController) {
+        self.navigationController = navigationController
+    }
+    
+    func start() {
+        let vc = GithubRepositoriesController(repositoriesProvider: GithubRepositoriesProvider())
+        vc.coordinator = self
+        navigationController.pushViewController(vc, animated: true)
+    }
+    
+    func openDetailsController(index: Int, viewModel: GithubRepositoriesController.ViewModel?) {
+        let detailsController = DetailsController()
+        detailsController.coordinator = self
+        detailsController.detailsViewModel = DetailsController.DetailsViewModel(repository: (viewModel?.githubRepositories[index])!)
+        detailsController.modalPresentationStyle = .pageSheet
+        detailsController.sheetPresentationController?.detents = [.medium()]
+        self.navigationController.present(detailsController, animated: true)
+    }
+    
+    func openCatController(repositoryProvider: GithubRepositoriesProvider) {
+        let catController = CatViewController(repositoriesProvider: repositoryProvider)
+        catController.coordinator = self
+        self.navigationController.pushViewController(catController, animated: true)
+    }
+    
+}
 

@@ -30,6 +30,7 @@ extension DetailsController {
 }
 
 class DetailsController: UIViewController {
+    weak var coordinator: Coordinator?
     
     private let container: UIView = UIView()
     private let icon: UIImageView = UIImageView()
@@ -42,13 +43,6 @@ class DetailsController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-//    init(repo: Repository) {
-//        detailsViewModel = DetailsViewModel(repository: repo)
-//        print(detailsViewModel)
-//        print("initializing details")
-//        super.init(nibName: nil, bundle: nil)
-//    }
     
     init(){
         super.init(nibName: nil, bundle: nil)
