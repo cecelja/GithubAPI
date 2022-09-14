@@ -16,6 +16,7 @@ protocol CoordinatorProtocol {
 
 class Coordinator: CoordinatorProtocol {
     var navigationController: UINavigationController
+    var catController = CatViewController()
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -37,7 +38,7 @@ class Coordinator: CoordinatorProtocol {
     }
     
     func openCatController(repositoryProvider: GithubRepositoriesProvider) {
-        let catController = CatViewController(repositoriesProvider: repositoryProvider)
+        catController = CatViewController()
         catController.coordinator = self
         self.navigationController.pushViewController(catController, animated: true)
     }
