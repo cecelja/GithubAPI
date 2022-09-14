@@ -14,7 +14,7 @@ protocol CoordinatorProtocol {
     func start()
 }
 
-class Coordinator: CoordinatorProtocol, CatDelegateProtocol {
+class Coordinator: CoordinatorProtocol, CatDelegate {
 
     var navigationController: UINavigationController
     var catController = CatViewController()
@@ -45,7 +45,7 @@ class Coordinator: CoordinatorProtocol, CatDelegateProtocol {
         self.navigationController.pushViewController(catController, animated: true)
     }
     
-    func isLiked(liked: Bool) {
+    func didToggleLike(liked: Bool) {
         if (liked) {
             let btn = (navigationController.viewControllers.first as? GithubRepositoriesController)?
                 .repositoriesView?.catButton
