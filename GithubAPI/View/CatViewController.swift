@@ -7,18 +7,24 @@
 import UIKit
 import SnapKit
 
+protocol CatDelegateProtocol: AnyObject {
+    func isLiked(liked: Bool)
+}
+
 class CatViewController: UIViewController {
     weak var coordinator: Coordinator?
     let repositoriesProvider = GithubRepositoriesProvider()
     let catImageView = UIImageView()
     let heartImage = UIImageView()
     static var toggle = false
+    weak var delegate: (CatDelegateProtocol)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         view.addSubview(catImageView)
         view.addSubview(heartImage)
+        self.delegate?.isLiked(liked: CatViewController.toggle)
         setupHearthImage()
         setupCatImage()
         repositoriesProvider.getImage(urlString: "https://avatars.githubusercontent.com/u/1019875?v=4") { (result: Result<Data, RequestError>) in
@@ -76,6 +82,7 @@ class CatViewController: UIViewController {
     
     @objc func imageTapped(sender: UITapGestureRecognizer) {
         CatViewController.toggle = !CatViewController.toggle
+        self.delegate?.isLiked(liked: CatViewController.toggle)
         if sender.state == .ended {
             if (CatViewController.toggle) {
                 heartImage.image = UIImage(systemName: "heart.fill")
@@ -86,3 +93,4 @@ class CatViewController: UIViewController {
     }
     
 }
+

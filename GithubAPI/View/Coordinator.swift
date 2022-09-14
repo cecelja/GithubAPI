@@ -14,7 +14,8 @@ protocol CoordinatorProtocol {
     func start()
 }
 
-class Coordinator: CoordinatorProtocol {
+class Coordinator: CoordinatorProtocol, CatDelegateProtocol {
+
     var navigationController: UINavigationController
     var catController = CatViewController()
     
@@ -40,8 +41,24 @@ class Coordinator: CoordinatorProtocol {
     func openCatController(repositoryProvider: GithubRepositoriesProvider) {
         catController = CatViewController()
         catController.coordinator = self
+        catController.delegate = self
         self.navigationController.pushViewController(catController, animated: true)
     }
+    
+    func isLiked(liked: Bool) {
+        if (liked) {
+            let btn = (navigationController.viewControllers.first as? GithubRepositoriesController)?
+                .repositoriesView?.catButton
+            btn?.backgroundColor = .red
+            print("We have delegate liftoff!")
+        } else {
+            (navigationController.viewControllers.first as? GithubRepositoriesController)?
+                .repositoriesView?.catButton.backgroundColor =  .systemGray.withAlphaComponent(0.6)
+
+            print("Houston we have a delegate problem!")
+        }
+    }
+    
     
 }
 
