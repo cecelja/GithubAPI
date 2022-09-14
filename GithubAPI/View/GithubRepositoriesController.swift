@@ -49,6 +49,9 @@ class GithubRepositoriesController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        var reactive =  ReactiveClass()
+        reactive.reactiveFunc()
+        
         view.backgroundColor = .white
         self.title = "GithubAPI"
         repositoriesView?.setupTableView()
