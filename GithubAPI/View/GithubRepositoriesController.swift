@@ -17,7 +17,7 @@ extension GithubRepositoriesController {
 
 class GithubRepositoriesController: UIViewController {
     let repositoriesProvider: GithubRepositoriesProvider
-    weak var coordinator: Coordinator?
+    var coordinator: Coordinator?
     
     var repositoriesView: RepositoriesView? {
         guard let view = view as? RepositoriesView else {

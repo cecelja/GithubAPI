@@ -18,9 +18,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         //let vc = GithubRepositoriesController(repositoriesProvider: GithubRepositoriesProvider())// Your initial view controller.
         let navController = UINavigationController()
+        let vc = GithubRepositoriesController(repositoriesProvider: GithubRepositoriesProvider())
+        vc.coordinator = Coordinator(navigationController: navController)
+        navController.pushViewController(vc, animated: true)
         
-        coordinator = Coordinator(navigationController: navController)
-        coordinator?.start()
+
         window.rootViewController = navController
         window.makeKeyAndVisible()
         self.window = window
