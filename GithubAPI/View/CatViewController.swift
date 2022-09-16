@@ -16,8 +16,17 @@ class CatViewController: UIViewController {
     let repositoriesProvider = GithubRepositoriesProvider()
     let catImageView = UIImageView()
     let heartImage = UIImageView()
-    static var toggle = false
+    var toggle = false
     weak var delegate: (CatDelegate)?
+    
+    init(toggle: Bool) {
+        super.init(nibName: nil, bundle: nil)
+        self.toggle = toggle
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,7 +72,7 @@ class CatViewController: UIViewController {
     }
     
     private func setupHearthImage(){
-        if (!CatViewController.toggle) {
+        if (!toggle) {
             let image = UIImage(systemName: "heart")
             heartImage.image = image
         } else {
@@ -80,10 +89,10 @@ class CatViewController: UIViewController {
     }
     
     @objc func imageTapped(sender: UITapGestureRecognizer) {
-        CatViewController.toggle = !CatViewController.toggle
-        self.delegate?.didToggleLike(liked: CatViewController.toggle)
+        toggle = !toggle
+        self.delegate?.didToggleLike(liked: toggle)
         if sender.state == .ended {
-            if (CatViewController.toggle) {
+            if (toggle) {
                 heartImage.image = UIImage(systemName: "heart.fill")
             } else {
                 heartImage.image = UIImage(systemName: "heart")

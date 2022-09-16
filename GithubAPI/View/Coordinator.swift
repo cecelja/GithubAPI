@@ -15,12 +15,14 @@ protocol CoordinatorProtocol {
 }
 
 class Coordinator: CoordinatorProtocol, CatDelegate {
+    var toggleCat = false
 
     var navigationController: UINavigationController
-    var catController = CatViewController()
+    var catController: CatViewController
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
+        self.catController = CatViewController(toggle: toggleCat)
     }
     
     func start() {
@@ -38,8 +40,7 @@ class Coordinator: CoordinatorProtocol, CatDelegate {
         self.navigationController.present(detailsController, animated: true)
     }
     
-    func openCatController(repositoryProvider: GithubRepositoriesProvider) {
-        catController = CatViewController()
+    func openCatController() {
         catController.coordinator = self
         catController.delegate = self
         self.navigationController.pushViewController(catController, animated: true)
@@ -54,7 +55,6 @@ class Coordinator: CoordinatorProtocol, CatDelegate {
         } else {
             (navigationController.viewControllers.first as? GithubRepositoriesController)?
                 .repositoriesView?.catButton.backgroundColor =  .systemGray.withAlphaComponent(0.6)
-
             print("Houston we have a delegate problem!")
         }
     }

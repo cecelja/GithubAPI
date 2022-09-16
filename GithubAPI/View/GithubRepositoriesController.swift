@@ -18,6 +18,7 @@ extension GithubRepositoriesController {
 class GithubRepositoriesController: UIViewController {
     let repositoriesProvider: GithubRepositoriesProvider
     weak var coordinator: Coordinator?
+    var toggle = false
     
     var repositoriesView: RepositoriesView? {
         guard let view = view as? RepositoriesView else {
@@ -49,9 +50,6 @@ class GithubRepositoriesController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        var reactive =  ReactiveClass()
-        reactive.reactiveFunc()
-        
         view.backgroundColor = .white
         self.title = "GithubAPI"
         repositoriesView?.setupTableView()
@@ -78,7 +76,7 @@ class GithubRepositoriesController: UIViewController {
     }
     
     @objc func goToCatController() {
-        coordinator?.openCatController(repositoryProvider: repositoriesProvider)
+        coordinator?.openCatController()
     }
 
 }
